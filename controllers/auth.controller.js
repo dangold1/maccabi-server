@@ -1,4 +1,4 @@
-const authService = require('../services/users.service');
+const userService = require('../services/users.service');
 const validationService = require('../services/validation.service');
 const jwt = require('jsonwebtoken');
 
@@ -12,10 +12,10 @@ const register = async (req, res) => {
         const error = validationService.isCreateValid(data);
         if (error) throw new Error(error.message);
 
-        const isExists = authService.findUserByUsername(data.username);
+        const isExists = userService.findUserByUsername(data.username);
         if (isExists) throw new Error("Username already exists");
 
-        const newUser = await authService.register(data);
+        const newUser = await userService.register(data);
         let token = jwt.sign({
             data: { _id: newUser._id, role: newUser.role },
         }, process.env.SECRET_JWT_KEY, { expiresIn: '7d' });
@@ -35,7 +35,7 @@ const register = async (req, res) => {
 const signin = async (req, res) => {
     try {
         const { data } = req.body;
-        const user = await authService.signin(data);
+        const user = await userService.signin(data);
         if (!user) throw new Error("User Not Exists");
         let token = jwt.sign({
             data: { _id: user._id, role: user.role },

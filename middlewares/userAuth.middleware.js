@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const authService = require('../services/auth.service');
+const userService = require('../services/users.service');
 
 /**
  * 
@@ -12,7 +12,7 @@ const userAuthMiddleware = async (req, res, next) => {
         if (!token) throw new Error("No token provided");
         const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
         const userId = decoded.data._id;
-        const user = await authService.findUserById(userId);
+        const user = await userService.findUserById(userId);
         if (!user) throw new Error("User Not Exists");
         req.user = user;
         next();
