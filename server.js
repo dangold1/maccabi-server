@@ -14,13 +14,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 // Enter app routes
-app.use('api/auth', authRoutes);
-
-// Auth middleware
-app.use(userAuthMiddleware);
+app.use('/api/auth', authRoutes);
 
 // Information routes
 app.use('/api/info', infoRoutes);
+
+// Auth middleware
+app.use(userAuthMiddleware);
 
 
 //----------------------------------Run Server---------------------------------------------

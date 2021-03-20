@@ -17,11 +17,15 @@ const findUserById = async userId => Users.find(u => u._id === userId);
 /**
  * @returns {[user]} Users
  */
-const getAllUsers = () => Users;
+const getAllUsers = () => Users.map(u => {
+    const { password, _id, token, ...user } = u;
+    user.id = _id;
+    return user;
+});
 
 
 /**
- * @param {Object} userData { username, password, role, age }
+ * @param {Object} userData { username, password, age }
  * @returns {Object} new User
  */
 const register = async userData => {

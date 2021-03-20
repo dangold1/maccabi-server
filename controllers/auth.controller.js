@@ -17,10 +17,10 @@ const register = async (req, res) => {
 
         const newUser = await userService.register(data);
         let token = jwt.sign({
-            data: { _id: newUser._id, role: newUser.role },
+            data: { _id: newUser._id },
         }, process.env.SECRET_JWT_KEY, { expiresIn: '7d' });
 
-        return res.json({ token, _id: newUser._id, role: newUser.role });
+        return res.json({ token, _id: newUser._id });
 
     } catch (err) {
         console.log(err);
@@ -38,10 +38,10 @@ const signin = async (req, res) => {
         const user = await userService.signin(data);
         if (!user) throw new Error("User Not Exists");
         let token = jwt.sign({
-            data: { _id: user._id, role: user.role },
+            data: { _id: user._id },
         }, process.env.SECRET_JWT_KEY, { expiresIn: '7d' });
 
-        return res.json({ token, _id: user._id, role: user.role });
+        return res.json({ token, _id: user._id });
 
     } catch (err) {
         console.log(err);
