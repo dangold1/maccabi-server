@@ -1,12 +1,19 @@
 const Users = require('../database/users');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
+
 /**
  * @param {string} username
  * @returns {Object || NULL} User || NULL
  */
+
 const findUserByUsername = username => Users.find(u => u.username === username);
 
+/**
+ * @param {string} email
+ * @returns {Object || NULL} User || NULL
+ */
+const findUserByEmail = email => Users.find(u => u.email === email);
 
 /**
  * @param {uuid} id 
@@ -22,7 +29,6 @@ const getAllUsers = () => Users.map(u => {
     user.id = _id;
     return user;
 });
-
 
 /**
  * @param {Object} userData { username, password, age }
@@ -46,8 +52,8 @@ const register = async userData => {
  */
 const signin = async data => {
     try {
-        const { username, password } = data;
-        const user = findUserByUsername(username);
+        const { email, password } = data;
+        const user = findUserByEmail(email);
         if (user) {
             const success = await bcrypt.compare(password, user.password);
             if (success) return user;
@@ -65,5 +71,6 @@ module.exports = {
     findUserById,
     signin,
     getAllUsers,
+    findUserByEmail,
     findUserByUsername,
 }
